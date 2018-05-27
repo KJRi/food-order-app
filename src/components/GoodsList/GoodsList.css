@@ -1,0 +1,11 @@
+:global{
+ .ant-list-item{
+  background-color: #fff;
+  margin-top: 5px;
+  padding: 5px;
+}
+.ant-avatar-image{
+  height: 100px;
+  width: 100px;
+}
+}
