@@ -7,11 +7,11 @@ import Detail from './Detail'
 import Login from './Login'
 import Register from './Register'
 import EditUserInfo from './EditUserInfo'
-import Good from './Good'
 import myFav from './myFav'
 import EditAddress from './EditAddress'
 import GoodsCar from './GoodsCar'
 import MyOrders from './MyOrders'
+import Good from './Good'
 
 // Force import during development to enable Hot-Module Replacement
 // not need ?
@@ -19,8 +19,8 @@ import MyOrders from './MyOrders'
 export default {
   editAddress: EditAddress,
   goodsCar: GoodsCar,
-  myOrders: MyOrders,
   good: Good,
+  myOrders: MyOrders,
   myfav: myFav,
   editUserInfo: EditUserInfo,
   register: Register,

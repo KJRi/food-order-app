@@ -26,8 +26,9 @@ const config = {
   // ----------------------------------
   server_host : ip.address(), // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
-  database    : 'mongodb://localhost:27017/phone',
-  secret      : 'phonefitapp',
+  database    : 'mongodb://localhost:27017/food',
+  secret      : 'foodorderapp',
+  elmapi      : 'http://restapi.ele.me/',
   // ----------------------------------
   // Compiler Configuration
   // ----------------------------------
@@ -103,7 +104,8 @@ config.globals = {
   '__PROD__'     : config.env === 'production',
   '__TEST__'     : config.env === 'test',
   '__COVERAGE__' : !argv.watch && config.env === 'test',
-  '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
+  '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
+  '__ELM_API__'  : JSON.stringify(config.elmapi)
 }
 
 // ------------------------------------

@@ -9,11 +9,11 @@
   .anticon-right {
     font-size: 14px;
     float: right;
-    color: #2468a2;
+    color: #0097FF;
   }
   :global .anticon {
     margin-right: 10px;
-    color: #2468a2;
+    color: #0097FF;
   }
 }
 a{

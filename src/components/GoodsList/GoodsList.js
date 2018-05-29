@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './GoodsList.css'
-import { List, Avatar, Icon } from 'antd'
+import { List, Avatar, Icon, Rate } from 'antd'
 import { Link } from 'react-router-dom'
 
 type Props = {
@@ -15,25 +15,32 @@ class GoodsList extends React.PureComponent<Props, State> {
     console.log(goodsList)
     console.log(goodsList)
     goodsList && goodsList.map(item => {
-      item.href = `/good/${item._id}`
+      item.href = `/good/${item.id}`
     })
     return (
       <List
         itemLayout='horizontal'
         dataSource={goodsList}
-        renderItem={item => (
-          <Link to={item.href}>
-            <List.Item key={item.title}>
-              <List.Item.Meta
-                avatar={<Avatar shape='square' size='large' src={item.imageUrl[0]} />}
-                title={item.title}
-                description={<p style={{ color: 'red ' }}>
-                  <Icon type='pay-circle-o' style={{ marginRight: 5 }} />
-                  {item.price.toFixed(2)}</p>}
+        renderItem={item => {
+          let url = `http://fuss10.elemecdn.com/${item.image_path}.jpeg`
+          return (
+            <Link to={item.href}>
+              <List.Item key={item.name}>
+                <List.Item.Meta
+                  avatar={<Avatar shape='square' src={url} />}
+                  title={item.name}
+                  description={<div>
+                    <p><Rate disabled defaultValue={item.rating} /> {item.rating} 月售{item.recent_order_num}</p>
+                    <p>起送 ￥{item.piecewise_agent_fee.rules[0].price} | {item.piecewise_agent_fee.description}</p>
+                  </div>}
         />
-            </List.Item>
-          </Link>
-    )}
+                <div>
+                  <p>{item.order_lead_time}分钟 | {item.distance}米</p>
+                </div>
+              </List.Item>
+            </Link>
+          )
+        }}
   />
     )
   }

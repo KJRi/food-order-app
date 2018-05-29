@@ -1,13 +1,23 @@
 .containal{
-  :global
+  background-color: #fff;
+  :global{
   .ant-carousel .slick-slide {
     text-align: center;
-    height: 400px;
-    background: #dec674;
-    overflow: hidden;
   }
+  .ant-carousel .slick-slide img{
+    width: 80px;
+    height: 80px;
+  }
+  .slick-track{
+    display: flex;
+  }
+}
+.banner-item{
+  width: 22%;
+  text-align: center;
+  display: inline-block;
   img{
     margin: 0 auto;
-    height: 400px;
   }
+}
 }
