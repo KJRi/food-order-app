@@ -56,6 +56,14 @@ class Good extends React.PureComponent<Props, State> {
     .then(res => this.setState({
       good: res
     }))
+    fetch(`/fav/getIs?goodId=${id}&&username=${username}`, {
+      method: 'GET'
+    }).then(res => res.json())
+    .then(res => {
+      if (res.length !== 0) {
+        this.setState({ favState: true })
+      }
+    })
     fetch(`/judge/get?goodId=${id}`, {
       method: 'GET'
     }).then(res => res.json())
@@ -63,6 +71,65 @@ class Good extends React.PureComponent<Props, State> {
       judgeList: res
     })
     )
+  }
+  likeIt = () => {
+    const { favState } = this.state
+    if (favState) {
+      // 取消收藏
+      fetch('/fav/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: localStorage.getItem('username'),
+          goodId: this.props.match.params.id
+        })
+      }).then(res => res.json())
+        .then(res => {
+          // 后端正确
+          if (res.success) {
+            message.destroy()
+            message.success(res.message)
+          } else {
+            message.destroy()
+            message.info(res.message)
+          }
+        })
+        .catch(e => console.log('Oops, error', e))
+      this.setState({
+        favState: false
+      })
+    } else {
+      // 收藏
+      fetch('/fav/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: localStorage.getItem('username'),
+          goodId: this.props.match.params.id,
+          title: this.state.good.title,
+          price: this.state.good.price,
+          imageUrl: this.state.url[0]
+        })
+      }).then(res => res.json())
+        .then(res => {
+          // 后端正确
+          if (res.success) {
+            message.destroy()
+            message.success(res.message)
+          } else {
+            message.destroy()
+            message.info(res.message)
+          }
+        })
+        .catch(e => console.log('Oops, error', e))
+      this.setState({
+        favState: true
+      })
+    }
   }
   carIt = (item: Object) => {
     console.log(item)
