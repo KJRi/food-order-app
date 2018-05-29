@@ -50,7 +50,7 @@ class Logo extends React.Component<Props, State> {
         key = '我的订单'
         break
       default:
-        key = '手机配件网'
+        key = '订餐系统'
     }
     this.setState({ current: key })
   }

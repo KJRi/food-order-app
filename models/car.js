@@ -7,6 +7,10 @@ const CarSchema = new Schema({
     type: String,
     require: true
   },
+  name: {
+    type: String,
+    require: true
+  },
   imageUrl: {
     type: String
   },

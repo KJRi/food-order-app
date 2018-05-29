@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { Table, Button, message, Select } from 'antd'
+import { Table, Button, message, Select, InputNumber } from 'antd'
 import styles from './GoodsCar.css'
 const Option = Select.Option
 
@@ -8,6 +8,11 @@ const columns = [{
   title: '图片',
   dataIndex: 'imageUrl',
   key: 'imageUrl'
+},
+{
+  title: '店铺',
+  dataIndex: 'title',
+  key: 'title'
 },
 {
   title: '名称',
@@ -20,7 +25,7 @@ const columns = [{
   key: 'count'
 },
 {
-  title: '总价',
+  title: '价格',
   dataIndex: 'price',
   key: 'price'
 },
@@ -49,7 +54,6 @@ class GoodsCar extends React.PureComponent<Props, State> {
     address: {}
   }
   deleteCar = (id: String) => {
-    console.log(id)
     fetch('/car/delete', {
       method: 'POST',
       headers: {
@@ -82,11 +86,13 @@ class GoodsCar extends React.PureComponent<Props, State> {
       carsList: res.map((item, index) => {
         return {
           key: item._id,
-          name: item.title,
+          title: item.title,
+          name: item.name,
           goodId: item.goodId,
           imageUrl: <img src={item.imageUrl} />,
           image: item.imageUrl,
-          count: item.count,
+          num: item.count,
+          count: <InputNumber min={1} defaultValue={item.count} onChange={(e) => this.changeCount(item, e)} />,
           price: item.price.toFixed(2),
           operator: <Button onClick={() => this.deleteCar(item._id)}>删除</Button>
         }
@@ -99,10 +105,32 @@ class GoodsCar extends React.PureComponent<Props, State> {
       addressList: res[0].address
     }))
   }
+  changeCount = (item: Object, e: Number) => {
+    fetch('/car/point', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem('username'),
+        id: item._id,
+        count: e
+      })
+    }).then(res => res.json())
+    .then(res => {
+      // 后端正确
+      if (res.success) {
+        message.destroy()
+        message.success(res.message)
+      } else {
+        message.destroy()
+        message.info(res.message)
+      }
+    })
+    .catch(e => console.log('Oops, error', e))
+  }
   account = () => {
     const { selected, address } = this.state
-    console.log(selected)
-    console.log(address)
     if (!selected.name) {
       message.destroy()
       message.info('请选择商品')
@@ -120,10 +148,11 @@ class GoodsCar extends React.PureComponent<Props, State> {
       },
       body: JSON.stringify({
         username: localStorage.getItem('username'),
-        title: selected.name,
+        title: selected.title,
+        foodName: selected.name,
         imageUrl: selected.image,
         price: selected.price,
-        count: selected.count,
+        count: selected.num,
         goodId: selected.goodId,
         name: address.name,
         phoneNum: address.phoneNum,
@@ -142,17 +171,17 @@ class GoodsCar extends React.PureComponent<Props, State> {
       }
     })
     .catch(e => console.log('Oops, error', e))
-    fetch('/car/delete', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: localStorage.getItem('username'),
-        carId: selected.key
-      })
-    })
-    location.href = './myOrders'
+    // fetch('/car/delete', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     username: localStorage.getItem('username'),
+    //     carId: selected.key
+    //   })
+    // })
+    // location.href = './myOrders'
   }
   resetCar = () => {
     fetch('/car/deleteAll', {
@@ -190,7 +219,7 @@ class GoodsCar extends React.PureComponent<Props, State> {
         <Table columns={columns} dataSource={carsList}
           rowSelection={{
             type: 'radio',
-            onSelect: (value) => this.setState({ selected: value, price: value.count * value.price })
+            onSelect: (value) => this.setState({ selected: value, price: value.num * value.price })
           }}
           pagination={{
             hideOnSinglePage: true

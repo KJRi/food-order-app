@@ -11,6 +11,7 @@ router.post('/create', (req, res) => {
     var newOrder = new Orders({
       username: req.body.username,
       title: req.body.title,
+      foodName: req.body.foodName,
       imageUrl: req.body.imageUrl,
       price: req.body.price,
       count: req.body.count,

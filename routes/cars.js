@@ -14,7 +14,8 @@ router.post('/create', (req, res) => {
       imageUrl: req.body.imageUrl,
       price: req.body.price,
       count: req.body.count,
-      goodId: req.body.goodId
+      goodId: req.body.goodId,
+      name: req.body.name
     })
     newCar.save((err) => {
       if (err) {
@@ -24,7 +25,23 @@ router.post('/create', (req, res) => {
     })
   }
 })
-
+// 增加减少
+router.post('/point', (req, res) => {
+  if (!req.body.username) {
+    res.json({ success: false, message: '未登录' })
+  } else {
+    var newUserInfo = {
+      count: req.body.count
+    }
+    // 存储用户信息
+    Cars.update({ '_id': req.body.id }, newUserInfo, (err) => {
+      if (err) {
+        return res.json({ success: false, message: '操作失败!' })
+      }
+      res.json({ success: true, message: '操作成功!' })
+    })
+  }
+})
 // 根据用户查找购物车信息
 router.get('/get', (req, res) => {
   if (req.query.username) {

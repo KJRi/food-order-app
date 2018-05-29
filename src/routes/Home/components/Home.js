@@ -71,7 +71,7 @@ class Home extends React.PureComponent<Props, State> {
                 const imgUrl = `http://fuss10.elemecdn.com/${item.image_hash}.jpeg`
                 if (index <= 7) {
                   return (
-                    <div className={styles['banner-item']} onClick={() => this.clickMenu(item)}>
+                    <div key={index} className={styles['banner-item']} onClick={() => this.clickMenu(item)}>
                       <img src={imgUrl} />
                       <p>{item.name}</p>
                     </div>
@@ -84,7 +84,7 @@ class Home extends React.PureComponent<Props, State> {
               const imgUrl = `http://fuss10.elemecdn.com/${item.image_hash}.jpeg`
               if (index >= 8) {
                 return (
-                  <div className={styles['banner-item']} onClick={() => this.clickMenu(item)}>
+                  <div key={index} className={styles['banner-item']} onClick={() => this.clickMenu(item)}>
                     <img src={imgUrl} />
                     <p>{item.name}</p>
                   </div>

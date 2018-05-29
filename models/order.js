@@ -7,6 +7,10 @@ const OrderSchema = new Schema({
     type: String,
     require: true
   },
+  foodName: {
+    type: String,
+    require: true
+  },
   imageUrl: {
     type: String
   },
