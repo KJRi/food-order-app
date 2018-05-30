@@ -171,17 +171,17 @@ class GoodsCar extends React.PureComponent<Props, State> {
       }
     })
     .catch(e => console.log('Oops, error', e))
-    // fetch('/car/delete', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     username: localStorage.getItem('username'),
-    //     carId: selected.key
-    //   })
-    // })
-    // location.href = './myOrders'
+    fetch('/car/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem('username'),
+        carId: selected.key
+      })
+    })
+    location.href = './myOrders'
   }
   resetCar = () => {
     fetch('/car/deleteAll', {
