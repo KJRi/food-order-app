@@ -12,7 +12,8 @@ router.post('/create', (req, res) => {
       username: req.body.username,
       rate: req.body.rate,
       content: req.body.content,
-      goodId: req.body.goodId
+      goodId: req.body.goodId,
+      goodName: req.body.goodName
     })
     newJudge.save((err) => {
       if (err) {

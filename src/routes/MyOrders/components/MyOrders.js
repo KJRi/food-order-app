@@ -12,14 +12,14 @@ type Props = {
 type State = {
   orderList: Array<Object>,
   visible: Boolean,
-  goodId: String
+  good: Object
 }
 
 class MyOrders extends React.PureComponent<Props, State> {
   state = {
     orderList: [],
     visible: false,
-    goodId: ''
+    good: {}
   }
   componentDidMount () {
     const username = localStorage.getItem('username')
@@ -37,7 +37,7 @@ class MyOrders extends React.PureComponent<Props, State> {
   }
   handleSubmit = (e) => {
     const username = localStorage.getItem('username')
-    const { goodId } = this.state
+    const { good } = this.state
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -49,9 +49,10 @@ class MyOrders extends React.PureComponent<Props, State> {
           },
           body: JSON.stringify({
             username: username,
-            goodId: goodId,
+            goodId: good.goodId,
             rate: values.rate,
-            content: values.content
+            content: values.content,
+            goodName: good.foodName
           })
         }).then(res => res.json())
       .then(res => {
@@ -80,13 +81,13 @@ class MyOrders extends React.PureComponent<Props, State> {
         <List
           itemLayout='horizontal'
           dataSource={orderList}
-          renderItem={item => (
-            <List.Item key={item.title}>
+          renderItem={(item, index) => (
+            <List.Item key={index}>
               <List.Item.Meta
                 avatar={<Link to={item.href}>
                   <Avatar shape='square' size='large' src={item.imageUrl} />
                 </Link>}
-                title={item.title}
+                title={<p>{item.title}-{item.foodName}</p>}
                 description={<p style={{ color: 'red ' }}>
                   <Icon type='pay-circle-o' style={{ marginRight: 5 }} />
                   {item.price.toFixed(2)}*{item.count}={item.price * item.count}</p>}
@@ -99,7 +100,7 @@ class MyOrders extends React.PureComponent<Props, State> {
                   {item.address.detail}</p>
                 <p>收货电话：{item.address.phoneNum}</p>
                 <p>订单时间：{item.time}</p>
-                <Button onClick={() => this.setState({ visible: true, goodId: item.goodId })}>评价</Button>
+                <Button onClick={() => this.setState({ visible: true, good: item })}>评价</Button>
               </div>
             </List.Item>
     )}

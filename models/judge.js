@@ -18,6 +18,10 @@ const JudgeSchema = new Schema({
   goodId: {
     type: String,
     require: true
+  },
+  goodName: {
+    type: String,
+    require: true
   }
 })
 

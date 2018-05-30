@@ -166,6 +166,7 @@ class Good extends React.PureComponent<Props, State> {
   }
   render () {
     const { good, favState, judgeList } = this.state
+    console.log(judgeList)
     const url = `http://fuss10.elemecdn.com/${good.image_path}.jpeg`
     return (
       <div className={styles['containal']}>
@@ -221,7 +222,7 @@ class Good extends React.PureComponent<Props, State> {
               <List.Item.Meta
                 avatar={item.username}
                 title={<Rate disabled defaultValue={item.rate} />}
-                description={<p>{item.content}</p>}
+                description={<div><p>{item.goodName}</p><p>{item.content}</p></div>}
             />
             </List.Item>
         )}
