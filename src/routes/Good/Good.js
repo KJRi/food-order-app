@@ -73,7 +73,7 @@ class Good extends React.PureComponent<Props, State> {
     )
   }
   likeIt = () => {
-    const { favState } = this.state
+    const { favState, good } = this.state
     if (favState) {
       // 取消收藏
       fetch('/fav/delete', {
@@ -110,9 +110,9 @@ class Good extends React.PureComponent<Props, State> {
         body: JSON.stringify({
           username: localStorage.getItem('username'),
           goodId: this.props.match.params.id,
-          title: this.state.good.title,
-          price: this.state.good.price,
-          imageUrl: this.state.url[0]
+          title: good.name,
+          imageUrl: `http://fuss10.elemecdn.com/${good.image_path}.jpeg`,
+          price: good.rating
         })
       }).then(res => res.json())
         .then(res => {

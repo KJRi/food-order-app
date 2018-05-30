@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import styles from './myFav.css'
-import { List, Avatar, Icon } from 'antd'
+import { List, Avatar, Icon, Rate } from 'antd'
 import { Link } from 'react-router-dom'
 
 type Props = {
@@ -36,6 +36,7 @@ class myFav extends React.PureComponent<Props, State> {
         item.href = `/good/${item._id}`
       })
     }
+    console.log(goodsList)
     return (
       <List
         itemLayout='horizontal'
@@ -46,9 +47,7 @@ class myFav extends React.PureComponent<Props, State> {
               <List.Item.Meta
                 avatar={<Avatar shape='square' size='large' src={item.imageUrl} />}
                 title={item.title}
-                description={<p style={{ color: 'red ' }}>
-                  <Icon type='pay-circle-o' style={{ marginRight: 5 }} />
-                  {item.price.toFixed(2)}</p>}
+                description={<Rate disabled defaultValue={item.price} />}
         />
             </List.Item>
           </Link>
