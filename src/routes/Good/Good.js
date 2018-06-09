@@ -3,8 +3,9 @@ import React from 'react'
 import styles from './Good.css'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { Avatar, Card, List, Icon, Rate, message, InputNumber } from 'antd'
+import { Avatar, Card, List, Tabs, Icon, Rate, message, InputNumber } from 'antd'
 const { Meta } = Card
+const { TabPane } = Tabs
 const packAge = [
   {
     key: 1,
@@ -197,36 +198,42 @@ class Good extends React.PureComponent<Props, State> {
           </div>
           <div>{good.promotion_info}</div>
         </Card>
-        <List
-          itemLayout='horizontal'
-          dataSource={packAge}
-          renderItem={item => (
-            <List.Item key={item.key}>
-              <List.Item.Meta
-                avatar={<Avatar src={item.url} />}
-                title={item.name}
-                description={<p>{item.price.toFixed(2)}</p>}
+        <Tabs defaultActiveKey='1'>
+          <TabPane tab='点餐' key='1'>
+            <List
+              itemLayout='horizontal'
+              dataSource={packAge}
+              renderItem={item => (
+                <List.Item key={item.key}>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.url} />}
+                    title={item.name}
+                    description={<p>{item.price.toFixed(2)}</p>}
           />
-              <div>
-                <InputNumber min={1} onChange={(e) => this.changeCount(item, e)} defaultValue={1} />
-                <p onClick={() => this.carIt(item)}><Icon type='shopping-cart' />添加购物车</p>
-              </div>
-            </List.Item>
+                  <div>
+                    <InputNumber min={1} onChange={(e) => this.changeCount(item, e)} defaultValue={1} />
+                    <p onClick={() => this.carIt(item)}><Icon type='shopping-cart' />添加购物车</p>
+                  </div>
+                </List.Item>
       )}
     />
-        <List
-          itemLayout='horizontal'
-          dataSource={judgeList}
-          renderItem={item => (
-            <List.Item key={item._id}>
-              <List.Item.Meta
-                avatar={item.username}
-                title={<Rate disabled defaultValue={item.rate} />}
-                description={<div><p>{item.goodName}</p><p>{item.content}</p></div>}
+          </TabPane>
+          <TabPane tab='评价' key='2'>
+            <List
+              itemLayout='horizontal'
+              dataSource={judgeList}
+              renderItem={item => (
+                <List.Item key={item._id}>
+                  <List.Item.Meta
+                    avatar={item.username}
+                    title={<Rate disabled defaultValue={item.rate} />}
+                    description={<div><p>{item.goodName}</p><p>{item.content}</p></div>}
             />
-            </List.Item>
+                </List.Item>
         )}
       />
+          </TabPane>
+        </Tabs>
       </div>
     )
   }

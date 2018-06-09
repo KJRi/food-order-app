@@ -150,13 +150,14 @@ class GoodsCar extends React.PureComponent<Props, State> {
     }))
   }
   account = () => {
-    const { selected, address } = this.state
+    const { selected, address, addressList } = this.state
+    const newAddress = addressList[address]
     if (!selected.name) {
       message.destroy()
       message.info('请选择商品')
       return
     }
-    if (!address.name) {
+    if (!newAddress.name) {
       message.destroy()
       message.info('请选择地址')
       return
@@ -174,10 +175,10 @@ class GoodsCar extends React.PureComponent<Props, State> {
         price: selected.price,
         count: selected.num,
         goodId: selected.goodId,
-        name: address.name,
-        phoneNum: address.phoneNum,
-        detail: address.detail,
-        location: address.location
+        name: newAddress.name,
+        phoneNum: newAddress.phoneNum,
+        detail: newAddress.detail,
+        location: newAddress.location
       })
     }).then(res => res.json())
     .then(res => {
@@ -233,7 +234,7 @@ class GoodsCar extends React.PureComponent<Props, State> {
         <Table columns={columns} dataSource={carsList}
           rowSelection={{
             type: 'radio',
-            onSelect: (value) => this.setState({ selected: value, price: value.num * value.price })
+            onSelect: (value) => this.setState({ selected: value, price: value.price })
           }}
           pagination={{
             hideOnSinglePage: true
@@ -249,7 +250,7 @@ class GoodsCar extends React.PureComponent<Props, State> {
         <div className={styles['operator-list']}>
           <Button size='large' onClick={this.resetCar}>清空购物车</Button>
           <div className={styles['account-list']}>
-          总价：￥{price.toFixed(2)}
+          总价：￥{price}
             <Button size='large' type='primary' onClick={this.account}>结算</Button>
           </div>
         </div>

@@ -76,6 +76,7 @@ class MyOrders extends React.PureComponent<Props, State> {
     orderList && orderList.map(item => {
       item.href = `/good/${item.goodId}`
     })
+    console.log(orderList)
     return (
       <div>
         <List
@@ -88,9 +89,11 @@ class MyOrders extends React.PureComponent<Props, State> {
                   <Avatar shape='square' size='large' src={item.imageUrl} />
                 </Link>}
                 title={<p>{item.title}-{item.foodName}</p>}
-                description={<p style={{ color: 'red ' }}>
-                  <Icon type='pay-circle-o' style={{ marginRight: 5 }} />
-                  {item.price.toFixed(2)}*{item.count}={item.price * item.count}</p>}
+                description={<div>
+                  <p><Icon type='tags' style={{ marginRight: 5 }} />{item.count}</p>
+                  <p style={{ color: 'red ' }}>
+                    <Icon type='pay-circle-o' style={{ marginRight: 5 }} />
+                    {item.price}</p></div>}
         />
               <div>
                 <p>收货人：{item.address.name}</p>
