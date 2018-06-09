@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './Home.css'
 import { Carousel, Icon } from 'antd'
 import { Link } from 'react-router-dom'
+import fetchJsonp from 'fetch-jsonp'
 import GoodsList from 'components/GoodsList'
 
 type Props = {}

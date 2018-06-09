@@ -93,7 +93,7 @@ class GoodsCar extends React.PureComponent<Props, State> {
           image: item.imageUrl,
           num: item.count,
           count: <InputNumber min={1} defaultValue={item.count} onChange={(e) => this.changeCount(item, e)} />,
-          price: item.price.toFixed(2),
+          price: (item.price * item.count).toFixed(2),
           operator: <Button onClick={() => this.deleteCar(item._id)}>删除</Button>
         }
       })
@@ -106,6 +106,7 @@ class GoodsCar extends React.PureComponent<Props, State> {
     }))
   }
   changeCount = (item: Object, e: Number) => {
+    const username = localStorage.getItem('username')
     fetch('/car/point', {
       method: 'POST',
       headers: {
@@ -128,6 +129,25 @@ class GoodsCar extends React.PureComponent<Props, State> {
       }
     })
     .catch(e => console.log('Oops, error', e))
+    fetch(`/car/get?username=${username}`, {
+      method: 'GET'
+    }).then(res => res.json())
+    .then(res => this.setState({
+      carsList: res.map((item, index) => {
+        return {
+          key: item._id,
+          title: item.title,
+          name: item.name,
+          goodId: item.goodId,
+          imageUrl: <img src={item.imageUrl} />,
+          image: item.imageUrl,
+          num: item.count,
+          count: <InputNumber min={1} defaultValue={item.count} onChange={(e) => this.changeCount(item, e)} />,
+          price: (item.price * item.count).toFixed(2),
+          operator: <Button onClick={() => this.deleteCar(item._id)}>删除</Button>
+        }
+      })
+    }))
   }
   account = () => {
     const { selected, address } = this.state
@@ -208,12 +228,6 @@ class GoodsCar extends React.PureComponent<Props, State> {
   }
   render () {
     const { carsList, price, addressList } = this.state
-    const option = addressList && addressList.map((item, index) => {
-      return (
-        <Option value={item} key={item._id}>{item.name}/{item.phoneNum}/{item.location[0]}
-          {item.location[1]}{item.location[2]}/{item.detail}</Option>
-      )
-    })
     return (
       <div className={styles['car-box']}>
         <Table columns={columns} dataSource={carsList}
@@ -225,7 +239,12 @@ class GoodsCar extends React.PureComponent<Props, State> {
             hideOnSinglePage: true
           }} />
         <Select style={{ width: 400 }} size='large' onChange={(value) => this.setState({ address: value })}>
-          {option}
+          { addressList && addressList.map((item, index) => {
+            return (
+              <Option key={index}>{item.name}/{item.phoneNum}/{item.location[0]}
+                {item.location[1]}{item.location[2]}/{item.detail}</Option>
+            )
+          })}
         </Select>
         <div className={styles['operator-list']}>
           <Button size='large' onClick={this.resetCar}>清空购物车</Button>
